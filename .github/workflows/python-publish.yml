@@ -11,11 +11,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2 
         with:
-          python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          python-version: '3.9'
+          cache: 'pip'
+          cache-dependency-path: '**/requirements-dev.txt'
+      - run: pip install -r subdirectory/requirements-dev.txt
       - run: python test.py
-      - uses: shaowenchen/debugger-action@v2
-        name: debugger
-        timeout-minutes: 30
-        continue-on-error: true
-        with:
-        ngrok_token: ${{ secrets.NGROK_TOKEN }}
