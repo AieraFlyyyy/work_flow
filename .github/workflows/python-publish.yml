@@ -2,7 +2,7 @@ name: 'GitHub Actions Get DL Update Bot'
 
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/5 * * * *'
 
 jobs:
   bot:
@@ -13,6 +13,6 @@ jobs:
         with:
           python-version: '3.9'
           cache: 'pip'
-          cache-dependency-path: '**/requirements-dev.txt'
-      - run: pip install -r subdirectory/requirements-dev.txt
+          cache-dependency-path: 'requirements-dev.txt'
+      - run: pip install -r requirements-dev.txt
       - run: python test.py
