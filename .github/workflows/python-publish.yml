@@ -2,7 +2,7 @@ name: 'GitHub Actions Get DL Update Bot'
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/30 * * * *'
 
 jobs:
   bot:
