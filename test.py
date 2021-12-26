@@ -15,6 +15,9 @@ params = {
 corpId = 'ww4437a57a5011b511'
 secretId = 'aCcnzlmNURGeuqML6hLmgFCI1XDPUp5YchKl_uT8HIY'
 
+theKeys = ['亲爱的决斗者', '游戏王：决斗链接', '#游戏王决斗链接#', '游戏王决斗链接']
+
+
 class WeChatPub:
 
     s = requests.session()
@@ -56,7 +59,25 @@ class WeChatPub:
             return
         return json.loads(rep.content)
 
+
 wechat = WeChatPub()
+
+
+def findTitle(obj):
+    values = list(obj)
+    title = ''
+    for ite in theKeys:
+        for value in values:
+            if isinstance(obj[value], str) and ite in obj[value]:
+                title = obj[value]
+    return title
+
+
+def hasKey(x, data):
+    if(x in data):
+        return True
+    return False
+
 
 def checkUpdate():
     req = json.loads(requests.get(bilibili, params).text)
@@ -69,13 +90,18 @@ def checkUpdate():
     with open('data.txt', 'r') as file:
         data = file.read()
 
-    description = json.loads(first_card)["item"]["description"]
-    # wechat.send_msg(description)
-    print(description)
+    first_card = json.loads(first_card)
+
+    if hasKey('item', first_card):
+        title = findTitle(first_card['item'])
+        print(title)
+    elif 'item' not in first_card:
+        title = first_card['summary']
+
     if(data != hash_code):
         with open('data.txt', 'w') as file_w:
             file_w.write(hash_code)
-            wechat.send_msg(description)
+            wechat.send_msg(title)
     else:
         print('no update')
 
@@ -85,6 +111,7 @@ def fun_timer():
     checkUpdate()
     timer = threading.Timer(600, fun_timer)
     timer.start()
+
 
 # fun_timer()
 checkUpdate()
